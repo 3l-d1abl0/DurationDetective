@@ -8,7 +8,7 @@
 
 #### Clone the repo
 ```
-$ git clone https://github.com/3l-d1abl0/
+$ git clone https://github.com/3l-d1abl0/DurationCheck.git
 ```
 ### Create a virtual environment for Python2
 ```
@@ -30,4 +30,5 @@ $ python durationcheck.py --path "/path/to/your/folder"
 
 ```
 ## Use case
-I have been using it personally for planning hours before diving into any Course videos or before Planning to binge watch any Television Series. Gives me a rough estimate of How much time consuming it can be
+I have been using it personally for planning hours before diving into any Course videos or before Planning to binge watch any Television Series. Gives me a rough estimate of How much time consuming it can be.
+Migrating it from mu original [Repo](https://github.com/3l-d1abl0/Utilities/tree/master/DurationCheck) for individual tracking.
