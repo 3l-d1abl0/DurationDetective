@@ -18,25 +18,20 @@ def getDuration(filename):
       ]
 
     try:
-        #output = check_output( command, stderr=STDOUT ).decode()
         filename =str(filename)
-        #print(filename)
         output = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
                              "default=noprint_wrappers=1:nokey=1", filename],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
 
-        #output = subprocess.check_output(output).decode()
     except subprocess.CalledProcessError as e:
-        #output = e.output.decode()
-        output = float(result.stdout)
+        output = float(output.stdout)
         
-        
-    if output.stdout.strip("\n")=="N/A":
+    if output.stdout.decode("utf-8") =="N/A":
         return '0.0'
     else:
-        return output.stdout.strip("\n")
+        return output.stdout.decode("utf-8") 
 
 
 def folderDuration(folderPath):
