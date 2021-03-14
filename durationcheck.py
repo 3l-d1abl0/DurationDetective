@@ -5,6 +5,7 @@ import os
 import sys
 import mimetypes
 mimetypes.init()
+import emoji
 
 def durationFormat(duration):
     TOTAL_MIN=0
@@ -27,13 +28,12 @@ def getDuration(filename):
 
     except subprocess.CalledProcessError as e:
 
-        output = float(result.stdout)
+        output = float(output.stdout)
 
-
-    if output.stdout.strip("\n")=="N/A":
+    if output.stdout.decode("utf-8") == 'N/A':
         return '0.0'
     else:
-        return output.stdout.strip("\n")
+        return output.stdout.decode("utf-8") 
 
 def checkMimeType(file_path):
 
@@ -87,4 +87,4 @@ if __name__=="__main__":
     duration = folderDuration(FOLDER_PATH)
     print(duration)
 
-    print("Total Duration: {}\n".format(durationFormat(duration)))
+    print( emoji.emojize("Total Duration: {} :white_check_mark: \n".format(durationFormat(duration))) )
