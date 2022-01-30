@@ -1,8 +1,20 @@
 from pathlib import Path
 import argparse
 import subprocess32 as subprocess
+import math
 import os
 import sys
+
+def format_time(seconds):
+    TOTAL_MIN=0
+    TOTAL_SEC=0
+    
+    TOTAL_SEC += int(seconds%60)
+    TOTAL_MIN += int(seconds/60) + int(TOTAL_SEC/60)
+    TOTAL_SEC = int(TOTAL_SEC%60)
+
+    return "{:.1f}hr {}min {}secs ".format(math.floor(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC)
+
 
 def getDuration(filename):
 
@@ -43,7 +55,8 @@ def folderDuration(folderPath):
         if os.path.isdir(str(path)):
             curr_scope = float(folderDuration(path)) 
             duration += curr_scope
-            print("{}/ --> {}".format( path, curr_scope) )
+            
+            print("{}/ --> {}".format( str(path).replace(str(folderPath),''), format_time(curr_scope)) )
         elif str(path).endswith('.mp4') or str(path).endswith('.avi') or str(path).endswith('.ts'):
             curr_scope = float(getDuration(path)) 
             duration += curr_scope
@@ -70,13 +83,7 @@ if __name__=="__main__":
         print("** This folder path does not exist **")
         exit()
     
-    TOTAL_MIN=0
-    TOTAL_SEC=0
-    
     duration = folderDuration(FOLDER_PATH)
-    print(duration)
-    TOTAL_SEC += int(duration%60)
-    TOTAL_MIN += int(duration/60) + int(TOTAL_SEC/60)
-    TOTAL_SEC = int(TOTAL_SEC%60)
+    print(duration,' sec')
 
-    print("Total Duration: {}hr {}min {}secs ".format(TOTAL_MIN/60, TOTAL_MIN%60, TOTAL_SEC))
+    print("Total Duration: {}  ".format(format_time(duration)))
