@@ -53,12 +53,12 @@ def folderDuration(folderPath):
         if os.path.isdir(str(path)):
             curr_scope = float(folderDuration(path))
             duration += curr_scope
-            print("{}/ --> {}\n".format( path, durationFormat(curr_scope)) )
+            print("{}/ --> {}\n".format( path.name, durationFormat(curr_scope)) )
 
         elif checkMimeType(str(path)):
             curr_scope = float(getDuration(path))
             duration += curr_scope
-            print("{} --> {}\n".format( path, durationFormat(curr_scope)) )
+            #print("{} --> {}\n".format( path, durationFormat(curr_scope)) )
 
     return duration
 
