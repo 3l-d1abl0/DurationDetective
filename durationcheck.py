@@ -7,13 +7,17 @@ import mimetypes
 mimetypes.init()
 import emoji
 
-def durationFormat(duration):
+def durationFormat(duration, full=False):
     TOTAL_MIN=0
     TOTAL_SEC=0
     TOTAL_SEC += int(duration%60)
     TOTAL_MIN += int(duration/60) + int(TOTAL_SEC/60)
     TOTAL_SEC = int(TOTAL_SEC%60)
-    return "{}hr {}min {}secs ".format(TOTAL_MIN/60, TOTAL_MIN%60, TOTAL_SEC)
+
+    if full==True:
+        return "{}hr {}min {}secs {} ".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":check_mark_button:"))
+    else:
+        return " {}mins {}secs {}".format(TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":check_mark_button:"))
     #print("Total Duration: {}hr {}min {}secs ".format(TOTAL_MIN/60, TOTAL_MIN%60, TOTAL_SEC))
 
 def getDuration(filename):
@@ -58,7 +62,8 @@ def folderDuration(folderPath):
         elif checkMimeType(str(path)):
             curr_scope = float(getDuration(path))
             duration += curr_scope
-            #print("{} --> {}\n".format( path, durationFormat(curr_scope)) )
+						#Individual File
+            print("{} --> {}\n".format( path, durationFormat(curr_scope)) )
 
     return duration
 
@@ -85,6 +90,6 @@ if __name__=="__main__":
     TOTAL_SEC=0
 
     duration = folderDuration(FOLDER_PATH)
-    print(duration)
+    print("{} minutes".format(int(duration/60)))
 
-    print( emoji.emojize("Total Duration: {} :white_check_mark: \n".format(durationFormat(duration))) )
+    print( "{} Total Duration: {} \n".format(emoji.emojize(":check_mark_button:"), durationFormat(duration, True))) 
