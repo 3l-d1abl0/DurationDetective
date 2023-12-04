@@ -1,4 +1,18 @@
-<h1 align="center">Duration Check</h1>
+<h1 align="center">
+
+    ___                 _   _             
+   /   \_   _ _ __ __ _| |_(_) ___  _ __  
+  / /\ / | | | '__/ _` | __| |/ _ \| '_ \ 
+ / /_//| |_| | | | (_| | |_| | (_) | | | |
+/___,'  \__,_|_|  \__,_|\__|_|\___/|_| |_|
+                                          
+    ___     _            _   _            
+   /   \___| |_ ___  ___| |_(_)_   _____  
+  / /\ / _ \ __/ _ \/ __| __| \ \ / / _ \ 
+ / /_//  __/ ||  __/ (__| |_| |\ V /  __/ 
+/___,' \___|\__\___|\___|\__|_| \_/ \___| 
+  
+</h1>
 
 <div align= "center">
   <h4>Check the media duration of your folders/subfolders.</h4>
@@ -8,7 +22,7 @@
 
 #### Clone the repo
 ```
-$ git clone https://github.com/3l-d1abl0/DurationCheck.git
+$ git clone https://github.com/3l-d1abl0/DurationDetective.git
 ```
 ### Create a virtual environment for Python3
 ```
@@ -16,7 +30,7 @@ $ virtualenv -p python3 <your_env>
 ```
 #### Install the required modules
 ```
-$ cd DurationCheck
+$ cd DurationDetective
 $ source <your_env>/bin/activate
 $ pip3 install -r requirements.txt
 ```
