@@ -1,6 +1,5 @@
 from pathlib import Path
 import argparse
-#import subprocess32 as subprocess
 import os
 import sys
 import mimetypes
@@ -30,7 +29,9 @@ def getDuration(filename:Path) -> float:
         #print(data['format']['duration'])
         return data['format']['duration']
     except Exception as e:
-        print('Error:: ', e)
+        #Todo
+        #print('Error:: ', e)
+        return 0.0
 
 def checkMimeType(file_path: str) -> bool:
 
