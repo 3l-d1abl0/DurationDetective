@@ -1,11 +1,12 @@
 from pathlib import Path
 import argparse
-import subprocess32 as subprocess
+#import subprocess32 as subprocess
 import os
 import sys
 import mimetypes
 mimetypes.init()
 import emoji
+import ffmpeg
 
 def durationFormat(duration, full=False):
     TOTAL_MIN=0
@@ -15,29 +16,21 @@ def durationFormat(duration, full=False):
     TOTAL_SEC = int(TOTAL_SEC%60)
 
     if full==True:
-        return "{}hr {}min {}secs {} ".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":check_mark_button:"))
+        return "{}hr {:02}min {:02}secs {}".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
     else:
-        return " {}mins {}secs {}".format(TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":check_mark_button:"))
+        return "{:02}mins {:02}secs {}".format(TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
     #print("Total Duration: {}hr {}min {}secs ".format(TOTAL_MIN/60, TOTAL_MIN%60, TOTAL_SEC))
 
 def getDuration(filename:Path) -> float:
 
     try:
-        filename =str(filename)
-        output = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
-                             "format=duration", "-of",
-                             "default=noprint_wrappers=1:nokey=1", filename],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
-
-    except subprocess.CalledProcessError as e:
-
-        output = float(output.stdout)
-
-    if output.stdout.decode("utf-8") == 'N/A':
-        return '0.0'
-    else:
-        return output.stdout.decode("utf-8") 
+        data = ffmpeg.probe(filename)
+        #print(data.keys())
+        #print(data['format'].keys())
+        #print(data['format']['duration'])
+        return data['format']['duration']
+    except Exception as e:
+        print('Error:: ', e)
 
 def checkMimeType(file_path: str) -> bool:
 
@@ -68,13 +61,13 @@ def folderDuration(folderPath:Path, folderLevel: int) -> float:
             print("{}{}{}/".format("│   "*folderLevel, symbol, path.name))
             curr_scope = float(folderDuration(path, folderLevel+1))
             duration += curr_scope
-            print("{}{}({})".format( "│   "*folderLevel, "└──", durationFormat(curr_scope)) )
+            print("{}{}({} )".format( "│   "*folderLevel, "└──", durationFormat(curr_scope)) )
 
         elif checkMimeType(str(path)):
             curr_scope = float(getDuration(path))
             duration += curr_scope
             #Individual File
-            print("{}{}{} --> {}".format("│   "*folderLevel, symbol, path.name, durationFormat(curr_scope)) )
+            print("{}{}{}  {}".format("│   "*folderLevel, symbol, durationFormat(curr_scope), path.name) )
 
     return duration
 
