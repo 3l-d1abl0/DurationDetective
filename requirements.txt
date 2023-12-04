@@ -1,6 +1,2 @@
-emoji==1.2.0
-ffprobe==0.5
-ffprobe-python==1.0.3
-pathlib==1.0.1
-subprocess32==3.5.4
-emoji==1.2.0
+emoji==2.8.0
+ffmpeg-python==0.2.0
