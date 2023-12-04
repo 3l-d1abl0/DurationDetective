@@ -20,7 +20,7 @@ def durationFormat(duration, full=False):
         return " {}mins {}secs {}".format(TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":check_mark_button:"))
     #print("Total Duration: {}hr {}min {}secs ".format(TOTAL_MIN/60, TOTAL_MIN%60, TOTAL_SEC))
 
-def getDuration(filename):
+def getDuration(filename:Path) -> float:
 
     try:
         filename =str(filename)
@@ -39,7 +39,7 @@ def getDuration(filename):
     else:
         return output.stdout.decode("utf-8") 
 
-def checkMimeType(file_path):
+def checkMimeType(file_path: str) -> bool:
 
     mimestart = mimetypes.guess_type(file_path)[0]
     if mimestart != None:
@@ -47,23 +47,34 @@ def checkMimeType(file_path):
     else:
         return False
 
+def getSortedDirectoryEntry(directoryContent: list[Path]) -> list[Path]:
+    return sorted( directoryContent, key=lambda entry: str(entry) )
 
-def folderDuration(folderPath):
+
+def folderDuration(folderPath:Path, folderLevel: int) -> float:
 
     duration =0.0
 
-    for path in Path(folderPath).iterdir():
-        info = path.stat()
+    entries = getSortedDirectoryEntry( list( Path(folderPath).iterdir() ))
+    #print(entries)
+    lastIndex = len(entries)-1
+
+    
+    for index, path in enumerate(entries):
+        
+        symbol = "└──" if index == lastIndex else "├──"
         if os.path.isdir(str(path)):
-            curr_scope = float(folderDuration(path))
+
+            print("{}{}{}/".format("│   "*folderLevel, symbol, path.name))
+            curr_scope = float(folderDuration(path, folderLevel+1))
             duration += curr_scope
-            print("{}/ --> {}\n".format( path.name, durationFormat(curr_scope)) )
+            print("{}{}({})".format( "│   "*folderLevel, "└──", durationFormat(curr_scope)) )
 
         elif checkMimeType(str(path)):
             curr_scope = float(getDuration(path))
             duration += curr_scope
-						#Individual File
-            print("{} --> {}\n".format( path, durationFormat(curr_scope)) )
+            #Individual File
+            print("{}{}{} --> {}".format("│   "*folderLevel, symbol, path.name, durationFormat(curr_scope)) )
 
     return duration
 
@@ -89,7 +100,8 @@ if __name__=="__main__":
     TOTAL_MIN=0
     TOTAL_SEC=0
 
-    duration = folderDuration(FOLDER_PATH)
-    print("{} minutes".format(int(duration/60)))
+    #Folder path , current hierarchy Level
+    duration = folderDuration(FOLDER_PATH, 0)
+    #print("{} minutes".format(int(duration/60)))
 
-    print( "{} Total Duration: {} \n".format(emoji.emojize(":check_mark_button:"), durationFormat(duration, True))) 
+    print( "\n{} Total Duration: {} \n".format(emoji.emojize(":check_mark_button:"), durationFormat(duration, True))) 
