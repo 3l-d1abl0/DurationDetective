@@ -18,9 +18,9 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/3l-d1abl0/DurationDetective",
     author="Sameer Barha",
-    author_email="sameer.barha12[at]gmail[dot]com",
+    author_email="sameer.barha12@gmail.com",
     maintainer="Sameer Barha",
-    maintainer_email="sameer.barha12[at]gmail[dot]com",
+    maintainer_email="sameer.barha12@gmail.com",
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
