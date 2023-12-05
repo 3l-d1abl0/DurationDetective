@@ -1,3 +1,5 @@
 tmp.py
 comms
 data.txt
+__pycache__/
+etc/
