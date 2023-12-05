@@ -10,10 +10,9 @@ from .durationdetective import DurationDetective
 
 def main():
     args = parseArgs()
-    print(args)
     
     path_to_folder = pathlib.Path(args.path_to_folder)
-    print(path_to_folder)
+    
     '''
     if not root_dir.is_dir():
         print("The specified root directory doesn't exist")
