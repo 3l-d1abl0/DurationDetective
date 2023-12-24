@@ -28,11 +28,12 @@ class DurationDetective:
         TOTAL_SEC += int(duration%60)
         TOTAL_MIN += int(duration/60) + int(TOTAL_SEC/60)
         TOTAL_SEC = int(TOTAL_SEC%60)
+        
 
         if full==True:
             return "{}hr {:02}min {:02}secs {}".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
         else:
-            return "{:02}mins {:02}secs {}".format(TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
+            return "{}hr {:02}mins {:02}secs {}".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
 
     @staticmethod
     def getSortedDirectoryEntry(directoryContent: list[Path]) -> list[Path]:
@@ -46,13 +47,11 @@ class DurationDetective:
         else:
             return False
 
-    def getDuration(self, filename:Path) -> float:
+    def getFileDuration(self, filename:Path) -> float:
 
         try:
             data = ffmpeg.probe(filename)
             #print(data.keys())
-            #print(data['format'].keys())
-            #print(data['format']['duration'])
             return data['format']['duration']
         except Exception as e:
             #Todo
@@ -61,7 +60,7 @@ class DurationDetective:
 
     def folderDuration(self, folderPath:Path, folderLevel: int) -> float:
 
-        duration =0.0
+        folderDurationSum = 0.0
 
         entries = self.getSortedDirectoryEntry( list( Path(folderPath).iterdir() ))
         #print(entries)
@@ -75,17 +74,22 @@ class DurationDetective:
 
                 print("{}{}{}/".format("│   "*folderLevel, symbol, path.name))
 
-                curr_scope = float(self.folderDuration(path, folderLevel+1))
-                duration += curr_scope
-                print("{}{}{} : {}/".format( "│   "*(folderLevel+1), "└──", self.durationFormat(curr_scope), path.name ))
+                folderDuration = float(self.folderDuration(path, folderLevel+1))
+                
+                print("{}{}{} : {}/".format( "│   "*(folderLevel+1), "└──", self.durationFormat(folderDuration), path.name ))
+                
+                folderDurationSum += folderDuration
 
             elif self.checkMimeType(str(path)):
-                curr_scope = float(self.getDuration(path))
-                duration += curr_scope
-                #Individual File
-                print("{}{}{}  {}".format("│   "*folderLevel, symbol, self.durationFormat(curr_scope), path.name) )
-
-        return duration
+                
+                #Individual File Duration
+                currentFileDuration = float(self.getFileDuration(path))
+                
+                folderDurationSum += currentFileDuration
+                
+                print("{}{}{}  {}".format("│   "*folderLevel, symbol, self.durationFormat(currentFileDuration), path.name) )
+                
+        return folderDurationSum
 
 
 
