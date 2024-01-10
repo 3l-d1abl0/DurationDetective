@@ -22,7 +22,7 @@ class DurationDetective:
         return cls(path_to_folder)
 
     @staticmethod
-    def durationFormat(duration, full=False):
+    def durationFormat(duration, full=True):
         TOTAL_MIN=0
         TOTAL_SEC=0
         TOTAL_SEC += int(duration%60)
@@ -33,7 +33,7 @@ class DurationDetective:
         if full==True:
             return "{}hr {:02}min {:02}secs {}".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
         else:
-            return "{}hr {:02}mins {:02}secs {}".format(int(TOTAL_MIN/60), TOTAL_MIN%60, TOTAL_SEC, emoji.emojize(":timer_clock:"))
+            return "{:02}mins {:02}secs {}".format(TOTAL_MIN , TOTAL_SEC, emoji.emojize(":timer_clock:"))
 
     @staticmethod
     def getSortedDirectoryEntry(directoryContent: list[Path]) -> list[Path]:
@@ -55,7 +55,7 @@ class DurationDetective:
             return data['format']['duration']
         except Exception as e:
             #Todo
-            #print('Error:: ', e)
+            print('Error:: ', e)
             return 0.0
 
     def folderDuration(self, folderPath:Path, folderLevel: int) -> float:
@@ -76,7 +76,7 @@ class DurationDetective:
 
                 folderDuration = float(self.folderDuration(path, folderLevel+1))
                 
-                print("{}{}{} : {}/".format( "│   "*(folderLevel+1), "└──", self.durationFormat(folderDuration), path.name ))
+                print("{}{}{} : {}/ {}".format( "│   "*(folderLevel+1), "└──", self.durationFormat(folderDuration), path.name, emoji.emojize(":check_mark_button:") ))
                 
                 folderDurationSum += folderDuration
 
